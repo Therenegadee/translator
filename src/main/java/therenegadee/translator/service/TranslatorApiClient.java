@@ -7,7 +7,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import therenegadee.translator.dto.TranslateRequest;
 import therenegadee.translator.exceptions.RestTemplateResponseErrorHandler;
 import therenegadee.translator.interceptor.LoggingClientHttpRequestInterceptor;
 
@@ -34,21 +33,18 @@ public class TranslatorApiClient {
 
     }
 
-    public String getTranslation(TranslateRequest request) {
+    public String getTranslation(String textToTranslate, String sourceLanguage, String destinationLanguage) {
         String urlTemplate = UriComponentsBuilder.fromPath("/translate")
-                .queryParam("sl", request.getSourceLanguage())
-                .queryParam("dl", request.getDestinationLanguage())
-                .queryParam("text", request.getTextToTranslate())
+                .queryParam("sl", sourceLanguage)
+                .queryParam("dl", destinationLanguage)
+                .queryParam("text", textToTranslate)
                 .encode()
                 .toUriString();
         return getRestTemplate()
                 .exchange(urlTemplate,
                         HttpMethod.GET,
                         null,
-                        String.class,
-                        request.getSourceLanguage(),
-                        request.getTextToTranslate(),
-                        request.getDestinationLanguage())
+                        String.class)
                 .getBody();
     }
 }

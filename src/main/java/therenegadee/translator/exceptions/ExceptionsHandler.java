@@ -27,6 +27,11 @@ public class ExceptionsHandler {
         return new ResponseEntity<>(ExceptionUtils.getMessage(e), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({InternalServerError.class, Exception.class})
+    public ResponseEntity<?> handleInternalServerError(InternalServerError e) {
+        return new ResponseEntity<>(ExceptionUtils.getMessage(e), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> notValid(MethodArgumentNotValidException ex, HttpServletRequest request) {
         List<String> errors = new ArrayList<>();

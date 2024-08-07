@@ -1,15 +1,14 @@
 spring:
   application:
     name: translator
+  flyway:
+    baseline-on-migrate: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:10000/translator
+#    url: jdbc:postgresql://localhost:10000/translator
+    url: jdbc:postgresql://translator_db:10000/translator
     username: translator
     password: translator
-server:
-  tomcat:
-    threads:
-      max: 10
 
 translator-api:
     url: "https://ftapi.pythonanywhere.com/"

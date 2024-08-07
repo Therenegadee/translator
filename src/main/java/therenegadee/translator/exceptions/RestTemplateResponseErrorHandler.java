@@ -20,7 +20,10 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
     @Override
     public void handleError(ClientHttpResponse httpResponse) throws IOException {
         if (httpResponse.getStatusCode().is5xxServerError()) {
-            throw new HttpClientErrorException(httpResponse.getStatusCode());
+            switch (httpResponse.getStatusCode()) {
+                case HttpStatus.INTERNAL_SERVER_ERROR -> throw new InternalServerError("Ошибка на стороне сервиса переводов");
+                default -> throw new HttpClientErrorException(httpResponse.getStatusCode());
+            }
         } else if (httpResponse.getStatusCode().is4xxClientError()) {
             switch (httpResponse.getStatusCode()) {
                 case HttpStatus.BAD_REQUEST -> throw new BadRequestException(httpResponse.getStatusText());
