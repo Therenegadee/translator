@@ -1,0 +1,26 @@
+services:
+  translator_db:
+    image: 'postgres:latest'
+    container_name: translator_db
+    environment:
+      - POSTGRES_USER=translator
+      - POSTGRES_PASSWORD=translator
+    ports:
+      - 10000:5432
+    networks:
+      - translator-network
+
+  translator-service:
+    container_name: translator-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    networks:
+      - translator-network
+
+
+networks:
+  translator-network:
+    driver: bridge
